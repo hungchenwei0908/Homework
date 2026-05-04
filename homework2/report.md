@@ -106,61 +106,109 @@ WeightGraph.h
 
 ## 效能分析
 1. ListGraph（鄰接串列）
-(1) addConnection(a, b)
-時間複雜度： O(1)（均攤）
-空間影響： 每條邊儲存兩次（無向圖）→ O(V + E)
-(2) printGraph()
-時間複雜度： O(V + E)
-空間複雜度： O(1)
-(3) runDFS(start)
-本質為 DFS（遞迴）
-時間複雜度： O(V + E)
-空間複雜度：
-visited 陣列：O(V)
-遞迴堆疊：最壞 O(V)
-(4) runBFS(start)
-使用 queue
-時間複雜度： O(V + E)
-空間複雜度：
-queue：O(V)
-visited：O(V)
-(5) countGroups()（連通元件）
-會對每個未拜訪節點呼叫 DFS
-時間複雜度： O(V + E)
-空間複雜度： O(V)
+   
+   (1) addConnection(a, b)
+   
+   時間複雜度： O(1)（均攤）
+   
+   空間影響： 每條邊儲存兩次（無向圖）→ O(V + E)
+
+   (2) printGraph()
+   
+   時間複雜度： O(V + E)
+   
+   空間複雜度： O(1)
+
+   (3) runDFS(start)
+   
+   本質為 DFS（遞迴）
+   
+   時間複雜度： O(V + E)
+   
+   空間複雜度：visited 陣列：O(V)
+   
+   遞迴堆疊：最壞 O(V)
+   
+   (4) runBFS(start)
+   
+   使用 queue
+
+   時間複雜度： O(V + E)
+
+   空間複雜度：queue：O(V)
+
+   visited：O(V)
+           
+   (5) countGroups()（連通元件）
+
+   會對每個未拜訪節點呼叫 DFS
+
+   時間複雜度： O(V + E)
+
+   空間複雜度： O(V)
+
 2. WeightGraph（加權圖）
-(1) addConnection(a, b, w)
-時間複雜度： O(1)
-空間複雜度： O(E)
-(2) printGraph()
-時間複雜度： O(V + E)
-最小生成樹（MST）
-(3) primMST(start)
-使用 priority queue（min-heap）
-時間複雜度：
-O((V + E) log V)
-空間複雜度：
-heap：O(V)
-陣列：O(V)
-(4) kruskalMST()
-排序 + Union-Find
-時間複雜度：
-排序：O(E log E)
-Union-Find：近似 O(E α(V))
+   
+   (1) addConnection(a, b, w)
 
-總體：O(E log E)
+   時間複雜度： O(1)
 
-空間複雜度：
-邊列表：O(E)
-Union-Find：O(V)
-最短路徑
-(5) shortestPath(start)（Dijkstra）
-使用 priority queue
-時間複雜度：
-O((V + E) log V)
-空間複雜度：
-dist：O(V)
-heap：O(V)
+   空間複雜度： O(E)
+
+   (2) printGraph()
+
+   時間複雜度： O(V + E)
+
+   最小生成樹（MST）
+
+   (3) primMST(start)
+
+   使用 priority queue（min-heap）
+
+   時間複雜度：
+
+   O((V + E) log V)
+
+   空間複雜度：
+
+   heap：O(V)
+
+   陣列：O(V)
+
+   (4) kruskalMST()
+
+   排序 + Union-Find
+
+   時間複雜度：
+
+   排序：O(E log E)
+
+   Union-Find：近似 O(E α(V))
+
+   總體：O(E log E)
+
+   空間複雜度：
+
+   邊列表：O(E)
+
+   Union-Find：O(V)
+
+   最短路徑
+ 
+   (5) shortestPath(start)（Dijkstra）
+
+   使用 priority queue
+
+   時間複雜度：
+ 
+   O((V + E) log V)
+
+   空間複雜度：
+
+   dist：O(V)
+
+   heap：O(V)
+
 
 ## 測試與驗證
 
