@@ -12,8 +12,9 @@
 
 接著分成兩種類型實作：
 
-ListGraph 採用鄰接串列（Adjacency List）儲存無權重圖，適合處理稀疏圖，可節省空間。並透過 DFS 以遞迴方式進行深度優先搜尋，用來遍歷節點與找出連通分量；再使用 BFS 搭配 Queue 完成廣度優先搜尋，依層級順序走訪圖中的節點。
-WeightGraph 則使用鄰接串列搭配權重資訊，處理加權圖問題。最小生成樹部分，實作 Prim 演算法，利用 Priority Queue 每次選取最小權重邊擴展生成樹；同時實作 Kruskal 演算法，先將邊依權重排序，再搭配 Disjoint Set（Union-Find） 判斷是否形成環，避免加入重複連接。
+1.ListGraph 採用鄰接串列（Adjacency List）儲存無權重圖，適合處理稀疏圖，可節省空間。並透過 DFS 以遞迴方式進行深度優先搜尋，用來遍歷節點與找出連通分量；再使用 BFS 搭配 Queue 完成廣度優先搜尋，依層級順序走訪圖中的節點。
+
+2.WeightGraph 則使用鄰接串列搭配權重資訊，處理加權圖問題。最小生成樹部分，實作 Prim 演算法，利用 Priority Queue 每次選取最小權重邊擴展生成樹；同時實作 Kruskal 演算法，先將邊依權重排序，再搭配 Disjoint Set（Union-Find） 判斷是否形成環，避免加入重複連接。
 
 最後在最短路徑部分，使用 Dijkstra 演算法，透過 Priority Queue 持續更新起點到各節點的最短距離，求得單源最短路徑結果。
 
