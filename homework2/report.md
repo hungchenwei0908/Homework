@@ -12,7 +12,24 @@
 
 ## 程式實作
 
+GraphBase.h
+```cpp
+#pragma once
+#include <iostream>
+using namespace std;
 
+class GraphBase {
+protected:
+    int vertexCount;
+
+public:
+    GraphBase(int n) : vertexCount(n) {}
+    virtual ~GraphBase() {}
+
+    virtual void addConnection(int a, int b) = 0;
+    virtual void printGraph() = 0;
+};
+```
 
 ListGraph.h
 ```cpp
@@ -23,7 +40,7 @@ ListGraph.h
 
 class ListGraph : public GraphBase {
 private:
-    vector<vector<int>> graphData;
+    vector<vector<int> > graphData;
 
     void explore(int node, vector<bool>& seen) {
         seen[node] = true;
@@ -104,11 +121,241 @@ public:
 ```
 WeightGraph.h
 ```cpp
+#pragma once
+#include "GraphBase.h"
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <climits>
 
+class UnionFind {
+private:
+    vector<int> root;
+    vector<int> depth;
+
+public:
+    UnionFind(int n) {
+        root.resize(n);
+        depth.resize(n, 0);
+        for (int i = 0; i < n; i++) {
+            root[i] = i;
+        }
+    }
+
+    int findRoot(int x) {
+        if (root[x] != x) {
+            root[x] = findRoot(root[x]);
+        }
+        return root[x];
+    }
+
+    void merge(int a, int b) {
+        int ra = findRoot(a);
+        int rb = findRoot(b);
+
+        if (ra == rb) return;
+
+        if (depth[ra] < depth[rb]) {
+            root[ra] = rb;
+        }
+        else if (depth[ra] > depth[rb]) {
+            root[rb] = ra;
+        }
+        else {
+            root[rb] = ra;
+            depth[ra]++;
+        }
+    }
+};
+
+class WeightGraph : public GraphBase {
+private:
+    struct Link {
+        int from;
+        int to;
+        int cost;
+    };
+
+    vector<vector<pair<int, int>>> data;
+    vector<Link> linkList;
+
+public:
+    WeightGraph(int n) : GraphBase(n) {
+        data.resize(n);
+    }
+
+    void addConnection(int a, int b, int w) {
+        data[a].push_back(pair<int, int>(b, w));
+        data[b].push_back(pair<int, int>(a, w));
+        linkList.push_back(Link{ a, b, w });
+    }
+
+    void addConnection(int a, int b) override {
+        addConnection(a, b, 1);
+    }
+
+    void printGraph() override {
+        for (int i = 0; i < vertexCount; i++) {
+            cout << i << " -> ";
+            for (size_t j = 0; j < data[i].size(); j++) {
+                cout << "("
+                    << data[i][j].first << ","
+                    << data[i][j].second << ") ";
+            }
+            cout << endl;
+        }
+    }
+
+    void primMST(int start) {
+        vector<int> best(vertexCount, INT_MAX);
+        vector<int> parent(vertexCount, -1);
+        vector<bool> used(vertexCount, false);
+
+        priority_queue<
+            pair<int, int>,
+            vector<pair<int, int>>,
+            greater<pair<int, int>>
+        > pq;
+
+        pq.push(pair<int, int>(0, start));
+        best[start] = 0;
+
+        while (!pq.empty()) {
+            int u = pq.top().second;
+            pq.pop();
+
+            if (used[u]) continue;
+            used[u] = true;
+
+            for (size_t i = 0; i < data[u].size(); i++) {
+                int v = data[u][i].first;
+                int w = data[u][i].second;
+
+                if (!used[v] && w < best[v]) {
+                    best[v] = w;
+                    parent[v] = u;
+                    pq.push(pair<int, int>(w, v));
+                }
+            }
+        }
+
+        cout << "Prim MST:\n";
+        long long total = 0;
+
+        for (int i = 0; i < vertexCount; i++) {
+            if (parent[i] != -1) {
+                cout << parent[i] << " - " << i
+                    << " : " << best[i] << endl;
+                total += best[i];
+            }
+        }
+        cout << "Total = " << total << endl;
+    }
+
+    void kruskalMST() {
+        sort(linkList.begin(), linkList.end(),
+            [](const Link& a, const Link& b) {
+                return a.cost < b.cost;
+            });
+
+        UnionFind uf(vertexCount);
+        long long total = 0;
+
+        cout << "Kruskal MST:\n";
+
+        for (size_t i = 0; i < linkList.size(); i++) {
+            Link e = linkList[i];
+
+            if (uf.findRoot(e.from) != uf.findRoot(e.to)) {
+                uf.merge(e.from, e.to);
+                cout << e.from << " - " << e.to
+                    << " : " << e.cost << endl;
+                total += e.cost;
+            }
+        }
+        cout << "Total = " << total << endl;
+    }
+
+    void shortestPath(int start) {
+        vector<int> dist(vertexCount, INT_MAX);
+
+        priority_queue<
+            pair<int, int>,
+            vector<pair<int, int>>,
+            greater<pair<int, int>>
+        > pq;
+
+        dist[start] = 0;
+        pq.push(pair<int, int>(0, start));
+
+        while (!pq.empty()) {
+            int d = pq.top().first;
+            int u = pq.top().second;
+            pq.pop();
+
+            if (d > dist[u]) continue;
+
+            for (size_t i = 0; i < data[u].size(); i++) {
+                int v = data[u][i].first;
+                int w = data[u][i].second;
+
+                if (dist[v] > dist[u] + w) {
+                    dist[v] = dist[u] + w;
+                    pq.push(pair<int, int>(dist[v], v));
+                }
+            }
+        }
+
+        cout << "Shortest paths from " << start << ":\n";
+        for (int i = 0; i < vertexCount; i++) {
+            cout << "to " << i << " = ";
+            if (dist[i] == INT_MAX) cout << "INF\n";
+            else cout << dist[i] << endl;
+        }
+    }
+};
 ```
 main.cpp
 ```cpp
+#include <iostream>
+#include "ListGraph.h"
+#include "WeightGraph.h"
+using namespace std;
 
+int main() {
+    cout << "=== ListGraph Demo ===\n";
+
+    ListGraph g1(6);
+    g1.addConnection(0, 1);
+    g1.addConnection(0, 2);
+    g1.addConnection(3, 4);
+    g1.addConnection(4, 5);
+
+    g1.printGraph();
+    g1.runDFS(0);
+    g1.runBFS(0);
+    g1.countGroups();
+
+    cout << "\n=== WeightGraph Demo ===\n";
+
+    WeightGraph g2(5);
+    g2.addConnection(0, 1, 5);
+    g2.addConnection(0, 2, 8);
+    g2.addConnection(1, 2, 2);
+    g2.addConnection(1, 3, 7);
+    g2.addConnection(2, 4, 3);
+    g2.addConnection(3, 4, 6);
+    g2.printGraph();
+    cout << endl;
+
+    g2.primMST(0);
+    cout << endl;
+    g2.kruskalMST();
+    cout << endl;
+    g2.shortestPath(0);
+
+    return 0;
+}
 ```
 
 ## 效能分析
@@ -218,6 +465,13 @@ main.cpp
 
 
 ## 測試與驗證
+| 測試案例 | 輸入參數 | 預計輸出 |實際輸出|
+|----------|--------------|----------|----------|
+| 測試一 | 5 2 8 6 1 | 1 2 8 6 5 |1 2 8 6 5 |
+| 測試二 | 3 2 7 1 9 4 6 8 | 1 2 4 3 9 7 6 8 |1 2 4 3 9 7 6 8|
+
+<img width="972" height="512" alt="h" src="https://github.com/user-attachments/assets/ba2bcece-558f-4598-9be3-e40bdbe5735f" />
+
 
 
 ### 結論
