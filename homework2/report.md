@@ -465,10 +465,114 @@ int main() {
 
 
 ## 測試與驗證
-| 測試案例 | 輸入參數 | 預計輸出 |實際輸出|
-|----------|--------------|----------|----------|
-| 測試一 | 5 2 8 6 1 | 1 2 8 6 5 |1 2 8 6 5 |
-| 測試二 | 3 2 7 1 9 4 6 8 | 1 2 4 3 9 7 6 8 |1 2 4 3 9 7 6 8|
+| 測試案例 | 輸入參數 |
+|----------|--------------|
+| 測試一 | ListGraph g1(6);|
+|   | g1.addConnection(0, 1);|
+|   |g1.addConnection(0, 2);|
+|   |g1.addConnection(3, 4);|
+|   | g1.addConnection(4, 5);|
+|    |WeightGraph g2(5);|
+|   | g2.addConnection(0, 1, 5);|
+|   | g2.addConnection(0, 2, 8);|
+|   | g2.addConnection(1, 2, 2);|
+|   | g2.addConnection(1, 3, 7);|
+|   | g2.addConnection(2, 4, 3);|
+|   | g2.addConnection(3, 4, 6);|
+
+預計輸出
+
+1 -> (0, 5)(2, 2)(3, 7)
+
+2 -> (0, 8)(1, 2)(4, 3)
+
+3 -> (1, 7)(4, 6)
+
+4 -> (2, 3)(3, 6)
+
+Prim MST:
+
+0 - 1:5
+
+1 - 2:2
+
+4 - 3:6
+
+2 - 4:3
+
+Total = 16
+
+Kruskal MST:
+
+1 - 2:2 
+
+2 - 4:3 
+
+0 - 1:5
+
+3 - 4:6
+
+Total = 16
+
+Shortest paths from 0:
+
+to 0 = 0
+
+to 1 = 5
+
+to 2 = 7
+
+to 3 = 12
+
+to 4 = 10
+
+實際輸出
+
+
+1 -> (0, 5)(2, 2)(3, 7)
+
+2 -> (0, 8)(1, 2)(4, 3)
+
+3 -> (1, 7)(4, 6)
+
+4 -> (2, 3)(3, 6)
+
+Prim MST:
+
+0 - 1:5
+
+1 - 2:2
+
+4 - 3:6
+
+2 - 4:3
+
+Total = 16
+
+Kruskal MST:
+
+1 - 2:2 
+
+2 - 4:3 
+
+0 - 1:5
+
+3 - 4:6
+
+Total = 16
+
+Shortest paths from 0:
+
+to 0 = 0
+
+to 1 = 5
+
+to 2 = 7
+
+to 3 = 12
+
+to 4 = 10
+
 
 <img width="972" height="512" alt="h" src="https://github.com/user-attachments/assets/ba2bcece-558f-4598-9be3-e40bdbe5735f" />
 
