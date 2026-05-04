@@ -389,11 +389,9 @@ int main() {
    
    時間複雜度： O(V + E)
    
-   空間複雜度：visited 陣列：O(V)
+   空間複雜度：O(V)（包含 visited 與遞迴堆疊）
    
-   遞迴堆疊：最壞 O(V)
-   
-   (4) runBFS(start)
+    (4) runBFS(start)
    
    使用 queue
 
