@@ -1,142 +1,40 @@
 
 # 41343120
+# 41343140
 
-作業一
+作業2
 
 ## 解題說明
 
-本題要求建立一個最小堆（MinHeap）與最大堆（MaxHeap），並將兩者進行整合。
+本次作業要讓我們透過實作來理解圖(Graph)的表示方式及演算法。首先，將問題建模為圖結構，並依需求選擇合適的表示方法，如鄰接矩陣或鄰接串列，以有效描述節點之間的關係。接著，實作基本圖演算法，包括深度優先搜尋（DFS）與廣度優先搜尋（BFS），以進行圖的走訪與連通性分析，並可進一步找出連通元件或建立生成樹。此外，透過最小生成樹演算法（如 Kruskal 或 Prim）解決最小成本連接問題，並利用最短路徑演算法（如 Dijkstra 或 Floyd-Warshall）計算節點間的最短距離。在進階應用方面，亦可透過拓樸排序處理具先後關係的活動網路問題。透過上述方法與演算法的整合應用，能有效掌握圖在資料結構中的核心概念與實務操作。
 ### 解題策略
 
-本題為了同時實作 MinHeap 與 MaxHeap，採用模板（template）結合比較器（comparator）的方式進行設計，將「元素大小比較規則」抽象化，使 Heap 本身不需區分最小堆或最大堆，只需依據傳入的比較器決定排列方式。具體做法是先建立一個通用的 Heap 類別，內部使用陣列（vector）來表示完全二元樹，並透過 HeapifyUp（上浮）與 HeapifyDown（下沉）來維持堆的性質；接著分別定義 MinCompare 與 MaxCompare 兩種比較規則，最後利用型別別名（using）將同一個 Heap 類別分別對應為 MinHeap 與 MaxHeap。透過此方法，不僅避免重複撰寫程式碼，也提升了程式的彈性與可讀性。
+
 ## 程式實作
 
-以下為主要程式碼：
-
+GraphBase.h
 ```cpp
+#pragma once
 #include <iostream>
-#include <vector>
-#include <stdexcept>
 using namespace std;
 
-
-template <class T>
-struct MinCompare {
-    bool operator()(const T& a, const T& b) {
-        return a < b;  
-    }
-};
-
-template <class T>
-struct MaxCompare {
-    bool operator()(const T& a, const T& b) {
-        return a > b;  
-    }
-};
-
-
-template <class T, class Compare>
-class Heap {
-private:
-    vector<T> heap;
-    Compare comp;
-
-    void HeapifyUp(int index) {
-        while (index > 0) {
-            int parent = (index - 1) / 2;
-
-            if (comp(heap[parent], heap[index]))
-                break;
-
-            swap(heap[parent], heap[index]);
-            index = parent;
-        }
-    }
-
-    void HeapifyDown(int index) {
-        int size = heap.size();
-
-        while (2 * index + 1 < size) {
-            int left = 2 * index + 1;
-            int right = 2 * index + 2;
-            int target = left;
-
-            if (right < size && comp(heap[right], heap[left]))
-                target = right;
-
-            if (comp(heap[index], heap[target]))
-                break;
-
-            swap(heap[index], heap[target]);
-            index = target;
-        }
-    }
+class GraphBase {
+protected:
+    int vertexCount;
 
 public:
-    bool IsEmpty() const {
-        return heap.empty();
-    }
+    GraphBase(int n) : vertexCount(n) {}
+    virtual ~GraphBase() {}
 
-    const T& Top() const {
-        if (IsEmpty())
-            throw runtime_error("Heap is empty");
-        return heap[0];
-    }
-
-    void Push(const T& value) {
-        heap.push_back(value);
-        HeapifyUp(heap.size() - 1);
-    }
-
-    void Pop() {
-        if (IsEmpty())
-            throw runtime_error("Heap is empty");
-
-        heap[0] = heap.back();
-        heap.pop_back();
-
-        if (!IsEmpty())
-            HeapifyDown(0);
-    }
+    virtual void addConnection(int a, int b) = 0;
+    virtual void printGraph() = 0;
 };
 
 
-template<class T>
-using MinHeap = Heap<T, MinCompare<T>>;
 
-template<class T>
-using MaxHeap = Heap<T, MaxCompare<T>>;
 
-int main() {
-    MinHeap<int> minH;
-    MaxHeap<int> maxH;
 
-    int data[] = { 5, 2, 8, 1, 7 };
 
-    
-    for (int x : data) {
-        minH.Push(x);
-        maxH.Push(x);
-    }
-
-   
-    cout << "MinHeap (小到大): ";
-    while (!minH.IsEmpty()) {
-        cout << minH.Top() << " ";
-        minH.Pop();
-    }
-    cout << endl;
-
-   
-    cout << "MaxHeap (大到小): ";
-    while (!maxH.IsEmpty()) {
-        cout << maxH.Top() << " ";
-        maxH.Pop();
-    }
-    cout << endl;
-
-    return 0;
-}
 ```
 
 ## 效能分析
