@@ -4,17 +4,56 @@
 作業3
 
 ## 解題說明
-
+本題要求實作四種排序演算法：Insertion Sort、Quick Sort（Median-of-Three）、Iterative Merge Sort 以及 Heap Sort，並比較它們在最差情況（Worst Case）下的執行效能。首先完成各排序演算法的程式設計，並利用測試資料驗證排序結果是否正確。接著針對不同資料規模（500、1000、2000、3000、4000、5000）產生對應的最差情況測試資料，利用高精度計時器量測執行時間。由於部分排序時間可能小於計時器精度，因此透過重複執行多次取平均值的方式提高量測準確度。最後將各演算法在不同資料量下的最差情況執行時間進行比較與分析，找出在 Worst Case 條件下表現最佳的排序方法，作為複合排序函式設計的依據。
 
 ### 解題策略
-
-
+本程式以模組化方式實作 Insertion Sort、Quick Sort、Merge Sort、Heap Sort 及 Composite Sort。利用亂數產生不同規模的測試資料，並使用高精度計時器量測各排序演算法的執行時間。為降低計時誤差，先預先建立多組測試資料，再重複執行排序多次並取平均值作為結果。Composite Sort 根據資料量大小選擇不同排序方式，小型資料使用 Insertion Sort，大型資料使用 Heap Sort，以兼顧執行效率與穩定性。透過實驗結果比較各演算法效能，分析其在不同資料規模下的表現。
 ## 程式實作
 ```cpp
 
 ```
 
 ## 效能分析
+                        最佳情況        平均情況       最差情況       
+Insertion Sort:
+最佳情況:O(n) 
+平均情況:O(n²)
+最差情況:O(n²)      
+Quick Sort（Median-of-Three）:
+最佳情況:O(n log n)
+平均情況:O(n log n) 
+最差情況:O(n²)
+Merge Sort:
+最佳情況:O(n log n)
+平均情況:O(n log n)
+最差情況:O(n log n)
+Heap Sort:
+最佳情況:O(n log n)
+平均情況:O(n log n)
+最差情況:O(n log n) 
+Composite Sort:
+最佳情況:視所選演算法而定
+平均情況:視所選演算法而定
+最差情況:O(n log n)
+Insertion Sort
+
+Insertion Sort 的實作方式簡單且額外空間需求低，當資料量較小時具有不錯的效率，但隨著資料量增加，其時間複雜度為 O(n²)，執行時間會明顯增加，因此不適合大型資料排序。
+
+Quick Sort
+
+Quick Sort 採用 Median-of-Three 方法選擇 Pivot，可降低因資料分布不均而造成效能下降的機率。在大多數情況下可達到 O(n log n) 的效率，但理論上的最差情況仍可能退化至 O(n²)。
+
+Merge Sort
+
+Merge Sort 採用 Iterative Bottom-Up 方式實作，其時間複雜度在所有情況下皆為 O(n log n)，效能穩定且不受資料排列方式影響，但需要額外 O(n) 的暫存空間。
+
+Heap Sort
+
+Heap Sort 利用最大堆積（Max Heap）進行排序，在最佳、平均及最差情況下皆能維持 O(n log n) 的時間複雜度，且只需 O(1) 額外空間，因此適合處理大型資料。
+
+Composite Sort
+
+Composite Sort 根據資料量大小選擇不同排序方法。當資料量小於等於 1000 筆時使用 Insertion Sort，以減少演算法額外開銷；當資料量大於 1000 筆時改用 Heap Sort，以獲得穩定的 O(n log n) 效能。因此 Composite Sort 能兼顧小型資料的執行速度與大型資料的穩定性，在整體效能上較為均衡。
 
 ## 測試與驗證
 
