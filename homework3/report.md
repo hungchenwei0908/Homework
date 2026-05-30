@@ -14,27 +14,46 @@
 ```
 
 ## 效能分析
-                        最佳情況        平均情況       最差情況       
+    
 Insertion Sort:
+
 最佳情況:O(n) 
+
 平均情況:O(n²)
+
 最差情況:O(n²)      
 Quick Sort（Median-of-Three）:
+
 最佳情況:O(n log n)
+
 平均情況:O(n log n) 
+
 最差情況:O(n²)
+
 Merge Sort:
+
 最佳情況:O(n log n)
+
 平均情況:O(n log n)
+
 最差情況:O(n log n)
+
 Heap Sort:
+
 最佳情況:O(n log n)
+
 平均情況:O(n log n)
+
 最差情況:O(n log n) 
+
 Composite Sort:
+
 最佳情況:視所選演算法而定
+
 平均情況:視所選演算法而定
+
 最差情況:O(n log n)
+
 Insertion Sort
 
 Insertion Sort 的實作方式簡單且額外空間需求低，當資料量較小時具有不錯的效率，但隨著資料量增加，其時間複雜度為 O(n²)，執行時間會明顯增加，因此不適合大型資料排序。
