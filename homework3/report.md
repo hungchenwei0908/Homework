@@ -80,3 +80,8 @@ Composite Sort 根據資料量大小選擇不同排序方法。當資料量小�
 本專題成功實作 Insertion Sort、Quick Sort（Median-of-Three）、Iterative Merge Sort、Heap Sort 以及 Composite Sort，並透過不同規模的隨機資料進行效能測試與分析。實驗結果顯示，各排序演算法在時間複雜度上的理論差異與實際執行時間大致相符，其中 Insertion Sort 僅適合小規模資料，在資料量增加時效能明顯下降；Quick Sort 在一般情況下表現良好，但仍可能因資料分布而退化；Merge Sort 與 Heap Sort 則在最佳、平均與最差情況下皆維持 O(n log n)，具有較穩定的效能表現。
 
 ## 申論及開發報告
+1. 為何 Insertion Sort 適合小資料:因為其在資料接近有序時接近 O(n)，且常數開銷小，但在大資料下會退化為 O(n²)。
+2. 為何 Merge Sort 較穩定:因為不論資料排列如何，都會固定進行分割與合併，因此時間複雜度始終為 O(n log n)。
+3. 為何 Heap Sort 可以保證 O(n log n):因為每次取出最大值與維護堆結構的操作皆為 O(log n)，整體固定進行 n 次。
+4. 為何要使用 Composite Sort:因為不同排序演算法在不同資料規模下效率不同，透過混合策略可以提升整體效能。
+5. 為何 Quick Sort 仍可能退化:因為在極端或特殊資料分布下，即使使用 Median-of-Three，仍可能造成不均勻分割。
