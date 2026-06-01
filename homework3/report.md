@@ -298,6 +298,11 @@ Composite Sort 根據資料量大小選擇不同排序方法。當資料量小�
 |4000|0.209377|0.021954|0.003690|0.010441|0.010231|
 |5000|0.329844|0.026545|0.004715|0.013257|0.013027|
 
+<img width="1919" height="1137" alt="image" src="https://github.com/user-attachments/assets/f751de03-d675-4911-8323-55077456af39" />
+
+以下是比較圖:
+
+<img width="855" height="547" alt="sorting_chart" src="https://github.com/user-attachments/assets/dba49483-e194-4728-9b11-ca8363399fa8" />
 
 
 ## 結論
