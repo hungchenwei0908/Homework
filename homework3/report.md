@@ -9,8 +9,50 @@
 ### 解題策略
 本程式以模組化方式實作 Insertion Sort、Quick Sort、Merge Sort、Heap Sort 及 Composite Sort。利用亂數產生不同規模的測試資料，並使用高精度計時器量測各排序演算法的執行時間。為降低計時誤差，先預先建立多組測試資料，再重複執行排序多次並取平均值作為結果。Composite Sort 根據資料量大小選擇不同排序方式，小型資料使用 Insertion Sort，大型資料使用 Heap Sort，以兼顧執行效率與穩定性。透過實驗結果比較各演算法效能，分析其在不同資料規模下的表現。
 ## 程式實作
+Header.h
 ```cpp
+// Header.h
+#ifndef HEADER_H
+#define HEADER_H
 
+#include <vector>
+using namespace std;
+
+// 排序函式
+void insertionSort(vector<int>& arr);
+void quickSort(vector<int>& arr);
+void mergeSort(vector<int>& arr);
+void heapSort(vector<int>& arr);
+void compositeSort(vector<int>& arr);
+
+// 工具函式
+vector<int> generateRandomData(int size);
+void printData(const vector<int>& data);
+
+// 測量時間模板
+template<typename Func>
+double timeSortingAverage(Func sortFunc, int size, int M) {
+    // 1. 為了不把「產生隨機數據」的時間算進去，我們先把 M 組隨機數據通通生好
+    vector<vector<int>> testData(M);
+    for (int i = 0; i < M; ++i) {
+        testData[i] = generateRandomData(size);
+    }
+
+    // 2. 開始計時（只把「純排序」的過程包進去）
+    auto start = chrono::high_resolution_clock::now();
+    for (int i = 0; i < M; ++i) {
+        sortFunc(testData[i]); // 每組隨機排列只排序一次
+    }
+    auto end = chrono::high_resolution_clock::now();
+
+    // 3. 計算總執行時間（秒）
+    chrono::duration<double> elapsed = end - start;
+    
+    // 4. 回傳平均時間（如果你想輸出總時間也可以，通常回傳 平均 = 總時間 / M）
+    return elapsed.count() / M; 
+}
+
+#endif // HEADER_H
 ```
 
 ## 效能分析
