@@ -285,6 +285,11 @@ Composite Sort 根據資料量大小選擇不同排序方法。當資料量小�
 
 ## 測試與驗證
 
+當資料越多處理時間為Insertion Sort>Quick Sort>Composite Sort>=Heap Sort>Merge Sort
+
+測試結果為:
+
+
 ## 結論
 本專題成功實作 Insertion Sort、Quick Sort（Median-of-Three）、Iterative Merge Sort、Heap Sort 以及 Composite Sort，並透過不同規模的隨機資料進行效能測試與分析。實驗結果顯示，各排序演算法在時間複雜度上的理論差異與實際執行時間大致相符，其中 Insertion Sort 僅適合小規模資料，在資料量增加時效能明顯下降；Quick Sort 在一般情況下表現良好，但仍可能因資料分布而退化；Merge Sort 與 Heap Sort 則在最佳、平均與最差情況下皆維持 O(n log n)，具有較穩定的效能表現。
 
